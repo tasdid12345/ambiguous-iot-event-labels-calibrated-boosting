@@ -21,6 +21,29 @@ python analysis.py
 
 Results: written to `results.json` (and `figures/macro_f1_comparison.png`).
 
+## Results (latest run)
+
+On the OpenML 1478 smartphone HAR dataset, a standard random-forest top-1 event classifier reached 0.981 macro-F1, while a class-balanced, calibrated LightGBM reached 0.994 on the same held-out test split, a small gain of about 1.3 points.
+
+| Metric | Value |
+|---|---|
+| baseline_score | 0.981 |
+| baseline_score_std | 0.0008538 |
+| improved_score | 0.9945 |
+| improved_score_std | 0 |
+| improvement | 0.01347 |
+| baseline_f1 | 0.981 |
+| improved_f1 | 0.9945 |
+| baseline_top1_accuracy | 0.9811 |
+| improved_top1_accuracy | 0.9942 |
+| baseline_top2_coverage | 1 |
+| improved_top2_coverage | 1 |
+| improved_cv_macro_f1 | 0.9915 |
+
+Run on 2026-10-18. Full output: [results.json](results.json) · [run.log](run.log)
+
+Notes: Proxy experiment: HAR sensor windows stand in for ambiguous IoT events; the paper's own data and model are not used. Ambiguity is not labelled in the data, so top-2 coverage is a diagnostic. Selected LightGBM params: {'num_leaves': 15, 'n_estimators': 400, 'min_child_samples': 30, 'learning_rate': 0.1}. Baseline top-2 coverage is derived from RF probabilities and is reported only for comparison. Std is the sample std over 3 seeds. The openml client controls its own HTTP timeouts; retries wrap the download calls.
+
 ## Reference
 
 This project is motivated by the following paper:
