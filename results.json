@@ -1,0 +1,32 @@
+{
+  "question": "Can a class-balanced, calibrated LightGBM classifier beat a standard random forest at resolving ambiguous smartphone sensor events into activity labels, measured by macro-F1 on the same held-out split?",
+  "method": "Stratified 80/20 split (seed 42) of OpenML 1478 smartphone HAR data. Both models use the same split, features, evaluation function and seeds 42-44. LightGBM hyperparameters are chosen by 3-fold CV on the training set only; the test set is used once per seed for the final evaluation.",
+  "dataset": {
+    "name": "OpenML 1478 Human Activity Recognition with Smartphones",
+    "source_url": "https://www.openml.org/d/1478",
+    "n_rows": 10299,
+    "n_train": 8239,
+    "n_test": 2060,
+    "same_as_paper": false,
+    "baseline_is_papers_method": false
+  },
+  "metric_name": "macro-F1 (test set)",
+  "higher_is_better": true,
+  "baseline": "Standard RandomForestClassifier (500 trees); top-1 predicted label is the event interpretation.",
+  "improved": "Class-balanced LightGBM with small CV hyperparameter search, wrapped in sigmoid calibration (3-fold); also yields a top-2 candidate set per event.",
+  "metrics": {
+    "baseline_score": 0.981009662868257,
+    "baseline_score_std": 0.0008538166573313769,
+    "improved_score": 0.9944809603482446,
+    "improved_score_std": 0.0,
+    "improvement": 0.013471297479987654,
+    "baseline_f1": 0.981009662868257,
+    "improved_f1": 0.9944809603482446,
+    "baseline_top1_accuracy": 0.9810679611650487,
+    "improved_top1_accuracy": 0.9941747572815535,
+    "baseline_top2_coverage": 1.0,
+    "improved_top2_coverage": 1.0,
+    "improved_cv_macro_f1": 0.9915027023987113
+  },
+  "notes": "Proxy experiment: HAR sensor windows stand in for ambiguous IoT events; the paper's own data and model are not used. Ambiguity is not labelled in the data, so top-2 coverage is a diagnostic. Selected LightGBM params: {'num_leaves': 15, 'n_estimators': 400, 'min_child_samples': 30, 'learning_rate': 0.1}. Baseline top-2 coverage is derived from RF probabilities and is reported only for comparison. Std is the sample std over 3 seeds. The openml client controls its own HTTP timeouts; retries wrap the download calls."
+}
